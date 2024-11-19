@@ -2,30 +2,128 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blackjack</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #006400; /* Verde oscuro como una mesa de blackjack */
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px #000000;
+        }
+
+        .mesa {
+            display: grid;
+            grid-template-areas: 
+                "dealer dealer dealer"
+                ". ia1 ia2"
+                ". jugador .";
+            gap: 20px;
+            width: 80%;
+            margin-top: 20px;
+        }
+
+        .dealer-cards {
+            grid-area: dealer;
+            text-align: center;
+        }
+
+        .jugador-cards {
+            grid-area: jugador;
+            text-align: center;
+        }
+
+        .ia1-cards {
+            grid-area: ia1;
+            text-align: center;
+        }
+
+        .ia2-cards {
+            grid-area: ia2;
+            text-align: center;
+        }
+
+        .card-container {
+            background-color: #228B22; /* Verde más claro para resaltar */
+            border: 2px solid #ffffff;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        button {
+            background-color: #ffffff;
+            color: #000000;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #ffcc00;
+            color: #000000;
+        }
+
+        .mensaje-final {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .mensaje-final button {
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
     <h1>Blackjack</h1>
-    <div class="jugador-cards">
-        <h2>Jugador: Toñito</h2>
-        <p>Cartas: {{ jugador_cartas }}</p>
-        <p>Puntaje: {{ jugador_puntaje }}</p>
-        <button onclick="window.location.href='/hit'">Pedir Carta</button>
+    <div class="mesa">
+        <!-- Dealer -->
+        <div class="dealer-cards card-container">
+            <h2>Dealer: Serafino</h2>
+            <p>Cartas: {{ dealerCartas }}</p>
+            <p>Puntaje: {{ dealerPuntaje }}</p>
+        </div>
+
+        <!-- IA 1 -->
+        <div class="ia1-cards card-container">
+            <h2>Cold-lettuce</h2>
+            <p>Cartas: {{ ia1Cartas }}</p>
+            <p>Puntaje: {{ ia1Puntaje }}</p>
+        </div>
+
+        <!-- IA 2 -->
+        <div class="ia2-cards card-container">
+            <h2>Pop-eye</h2>
+            <p>Cartas: {{ ia2Cartas }}</p>
+            <p>Puntaje: {{ ia2Puntaje }}</p>
+        </div>
+
+        <!-- Jugador -->
+        <div class="jugador-cards card-container">
+            <h2>Jugador: Toñito</h2>
+            <p>Cartas: {{ jugadorCartas }}</p>
+            <p>Puntaje: {{ jugadorPuntaje }}</p>
+            <button onclick="window.location.href='/hit'">Pedir Carta</button>
+            <button onclick="window.location.href='/stand'">Plantarse</button>
+        </div>
     </div>
-    <div class="ia1-cards">
-        <h2>Cold-lettuce</h2>
-        <p>Cartas: {{ ia1_cartas }}</p>
-        <p>Puntaje: {{ ia1_puntaje }}</p>
+
+    {% if estadoJuego.finalizado %}
+    <div class="mensaje-final">
+        <h3>{{ estadoJuego.mensajeFinal }}</h3>
+        <button onclick="window.location.href='/nuevaRonda'">Jugar de Nuevo</button>
     </div>
-    <div class="ia2-cards">
-        <h2>Pop-eye</h2>
-        <p>Cartas: {{ ia2_cartas }}</p>
-        <p>Puntaje: {{ ia2_puntaje }}</p>
-    </div>
-    <div class="dealer-cards">
-        <h2>Dealer: Serafino</h2>
-        <p>Cartas: {{ dealer_cartas }}</p>
-        <p>Puntaje: {{ dealer_puntaje }}</p>
-    </div>
+    {% endif %}
 </body>
 </html>
