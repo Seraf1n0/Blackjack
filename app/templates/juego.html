@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Blackjack</title>
+</head>
+<body>
+    <h1>Blackjack</h1>
+    <div class="jugador-cards">
+        <h2>Jugador: Toñito</h2>
+        <p>Cartas: {{ jugador_cartas }}</p>
+        <p>Puntaje: {{ jugador_puntaje }}</p>
+        <button onclick="window.location.href='/hit'">Pedir Carta</button>
+    </div>
+    <div class="ia1-cards">
+        <h2>Cold-lettuce</h2>
+        <p>Cartas: {{ ia1_cartas }}</p>
+        <p>Puntaje: {{ ia1_puntaje }}</p>
+    </div>
+    <div class="ia2-cards">
+        <h2>Pop-eye</h2>
+        <p>Cartas: {{ ia2_cartas }}</p>
+        <p>Puntaje: {{ ia2_puntaje }}</p>
+    </div>
+    <div class="dealer-cards">
+        <h2>Dealer: Serafino</h2>
+        <p>Cartas: {{ dealer_cartas }}</p>
+        <p>Puntaje: {{ dealer_puntaje }}</p>
+    </div>
+</body>
+</html>

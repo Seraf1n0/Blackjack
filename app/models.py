@@ -1,0 +1,66 @@
+# En este archivo van a estar todos los modelos necesarios para la app
+import random
+"""
+"""
+class Carta:
+    def __init__(self, valor, palo):
+        self.valor = valor
+        self.palo = palo
+
+    def __str__(self):
+        return f"{self.valor} de {self.palo}" # Ejm: 4 de picas uwu
+    
+    def getValor (self):
+        if (self.valor in ["J", "Q", "K"]):
+            return 10
+        elif (self.valor == "A"):
+            return 11 # Esto puede ser 1 o 11 dependiendo del estado de la mano
+        else:
+            return int(self.valor)
+        
+class Baraja:
+    palos = ["Corazones", "Diamantes", "Tréboles", "Picas"]
+    valores = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
+ 
+    def __init__(self):
+        self.cartas = []
+        for palo in self.palos:
+            for valor in self.valores:
+                self.cartas.append(Carta(valor, palo))
+        
+        random.shuffle (self.cartas) # Mezclado de cartas
+    
+    def repartirCarta (self):
+        if (self.cartas):
+            return self.cartas.pop() # Tomar la carta on top uwu
+        else:
+            return None # Carta vacia y en caso de que se retorne nulo traemos nueva baraja
+        
+
+class Jugador:
+    def __init__(self, nombre):
+        self.nombre = nombre
+        self.mano = []
+    
+    def giveCarta (self, carta):
+        self.mano.append(carta)
+    
+    def calcularPuntuacion (self):
+        puntaje = 0
+        for carta in self.mano:
+            puntaje += carta.getValor ()
+        # Esto en caso de que las aces que son 11 o 1
+        aces = 0
+        for carta in self.mano:
+            if carta.valor == "A":
+                aces += 1
+        
+        # Buclesito para tratar de usar aces como 1 en lugar de 11 en caso de que se pase
+        while (puntaje > 21 and aces != 0):
+            puntaje -= 10
+            aces -= 1
+        return puntaje
+    
+    def __str__(self):
+        return f"{self.nombre} tiene: {[str(carta) for carta in self.mano]}"
+        
