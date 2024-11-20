@@ -9,11 +9,7 @@ dealer = Jugador("Dealer Serafino")
 ia1 = AgenteQLearning("Serafino")
 ia2 = AgenteQLearning("Pancho")
 probabilidadDeGanar = 0
-<<<<<<< HEAD
-
-=======
 imagenesDealer = []
->>>>>>> 17a926ee28d5f37ec66f1dfcb9ce88145b491817
 # Estado del juego: Esto es muy importante pues nos ayuda a validar los turnos y jugadas
 estadoJuego = {
     "jugadorTurno": True,
@@ -54,16 +50,12 @@ def juego():
                            ia1Puntaje=ia1.calcularPuntuacion(),
                            ia2Puntaje=ia2.calcularPuntuacion(),
                            estadoJuego=estadoJuego,
-<<<<<<< HEAD
-                           jugadorProbabilidad=probabilidadDeGanar
-=======
                            jugadorProbabilidad = probabilidadDeGanar,
                            jugadorInterfaz = jugador,
                            ia1 = ia1,
                            ia2 = ia2,
                            dealer = imagenesDealer
 
->>>>>>> 17a926ee28d5f37ec66f1dfcb9ce88145b491817
 )
 
 @app.route("/hit")
