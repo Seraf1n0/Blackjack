@@ -31,13 +31,13 @@
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Sombra en el texto */
     position: relative;
 }
+
 .jugador {
     position: absolute;
     top: 450px;  /* Distancia desde el borde superior del contenedor */
-    left: 500px;  /* Distancia desde el borde izquierdo del contenedor */
+    left: 540px;  /* Distancia desde el borde izquierdo del contenedor */
     width: 300px;
     height: 50px;
-
 }
 .carta {
     width: 80px; /* Ajusta el tamaño de las cartas */
@@ -71,6 +71,15 @@
     height: 50px;
 }
 
+.infoIA1{
+    position: absolute;
+    top: 250px;  /* Distancia desde el borde superior del contenedor */
+    left: 50px;  /* Distancia desde el borde izquierdo del contenedor */
+    width: 300px;
+    height: 50px;
+    text-align: center;
+}
+
 .ia2 {
     position: absolute;
     top: 350px;  /* Distancia desde el borde superior del contenedor */
@@ -79,12 +88,76 @@
     height: 50px;
 }
 
-.banca {
+.infoIA2{
     position: absolute;
     top: 250px;  /* Distancia desde el borde superior del contenedor */
+    left: 730px;  /* Distancia desde el borde izquierdo del contenedor */
+    width: 300px;
+    height: 50px;
+    text-align: center;
+}
+
+.banca {
+    position: absolute;
+    top: 200px;  /* Distancia desde el borde superior del contenedor */
+    left: 450px;  /* Distancia desde el borde izquierdo del contenedor */
+    width: 300px;
+    height: 50px;
+}
+
+.infoBanca{
+    position: absolute;
+    top: 90px;  /* Distancia desde el borde superior del contenedor */
     left: 400px;  /* Distancia desde el borde izquierdo del contenedor */
     width: 300px;
     height: 50px;
+    text-align: center;
+}
+
+.jugador-info {
+    border-radius: 10px;
+    width: 380px;
+    margin: 10px auto;
+    text-align: center;
+}
+
+h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 1.1em;
+    margin: 5px 0;
+}
+
+.botones {
+    position: absolute;
+    top: 530px;  /* Distancia desde el borde superior del contenedor */
+    left: 430px;  /* Distancia desde el borde izquierdo del contenedor */
+    width: 250px;
+    height: 50px;
+    border: 2px solid #333;  /* Color y grosor del borde alrededor del contenedor */
+    border-radius: 10px;  /* Redondea las esquinas del contenedor */
+    background-color: #2c2523;  /* Fondo gris claro del contenedor */
+    display: flex;  /* Usamos flexbox para alinear los botones */
+    justify-content: space-between;  /* Espaciado entre los botones */
+    padding: 10px 10px;  /* Añadimos algo de espacio alrededor de los botones */
+}
+
+.botones button {
+    background-color: #4CAF50;  /* Fondo verde para los botones */
+    color: white;  /* Color del texto */
+    border: 2px solid #4CAF50;  /* Borde del botón */
+    border-radius: 8px;  /* Redondea las esquinas de los botones */
+    padding: 10px 20px;  /* Añade algo de padding dentro de los botones */
+    font-size: 16px;  /* Tamaño de fuente para los botones */
+    cursor: pointer;  /* Cambia el cursor al pasar por encima */
+    transition: background-color 0.3s;  /* Transición suave para el hover */
+}
+
+.botones button:hover {
+    background-color: #45a049;  /* Cambio de color al pasar el cursor sobre el botón */
 }
 </style>
 </head>
@@ -92,33 +165,62 @@
 
    <div class="mesa">
 
+    <div class="jugador-info">
+        <h2>Jugador: {{ jugadorNombre }}</h2>
+        <p>Puntaje: {{ jugadorPuntaje }}</p>
+        <p>Probabilidad de pasarse de 21 si pide otra carta: {{ jugadorProbabilidad }}%</p>
+    </div>
         <div class="jugador">
-            <img src="{{ url_for('static', filename='img/foto.jpg') }}" alt="As de Corazones" class="carta">
-            <img src="{{ url_for('static', filename='img/foto.jpg') }}" alt="2 de Corazones" class="carta">
-            <img src="{{ url_for('static', filename='img/foto.jpg') }}" alt="2 de Corazones" class="carta">
-            
-        </div>
+            <!--
+            Esta es la manera de iterar las cartas para mostrarlas
+            -->
+            {%for imagen in jugadorInterfaz.mano%}
+                <img src="{{ url_for('static', filename='img/' + imagen.nombreArchivo) }}" alt="{{ imagen }}" class="carta">
+            {% endfor %}
 
+        </div>
+        <div class="botones">
+            <button onclick="window.location.href='/hit'">Pedir Carta</button>
+            <button onclick="window.location.href='/stand'">Plantarse</button>
+            {% if estadoJuego.finalizado %}
+            <div class="mensaje-final">
+                <h3>{{ estadoJuego.mensajeFinal }}</h3>
+                <button onclick="window.location.href='/nuevaRonda'">Pedir Carta</button>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="infoIA1">
+            <h2>Cold-lettuce</h2>
+            <p>Puntaje: {{ ia1Puntaje }}</p>
+        </div>
         <div class="ia1">
-            <img src="{{ url_for('static', filename='img/foto.jpg') }}" alt="As de Corazones" class="carta">
-            <img src="{{ url_for('static', filename='img/foto.jpg') }}" alt="2 de Corazones" class="carta">
-            <img src="{{ url_for('static', filename='img/foto.jpg') }}" alt="2 de Corazones" class="carta">
+   
+            {%for imagen in ia1.mano%}
+                <img src="{{ url_for('static', filename='img/' + imagen.nombreArchivo) }}" alt="{{ imagen }}" class="carta">
+            {% endfor %}
             
         </div>
 
+        <div class="infoIA2">
+            <h2>Pop-eye</h2>
+            <p>Puntaje: {{ ia2Puntaje }}</p>
+            </div>
         <div class="ia2">
-            <img src="{{ url_for('static', filename='img/foto.jpg') }}" alt="As de Corazones" class="carta">
-            <img src="{{ url_for('static', filename='img/foto.jpg') }}" alt="2 de Corazones" class="carta">
-            <img src="{{ url_for('static', filename='img/foto.jpg') }}" alt="2 de Corazones" class="carta">
+            {%for imagen in ia2.mano%}
+                <img src="{{ url_for('static', filename='img/' + imagen.nombreArchivo) }}" alt="{{ imagen }}" class="carta">
+            {% endfor %}
             
         </div>
 
-
+        <div class="infoBanca">
+            <h2>Dealer: Serafino</h2>
+            <p>Puntaje: {{ dealerPuntaje }}</p>
+        </div>
         <div class="banca">
-            <img src="{{ url_for('static', filename='img/foto.jpg') }}" alt="As de Corazones" class="cartaB">
-            <img src="{{ url_for('static', filename='img/foto.jpg') }}" alt="2 de Corazones" class="cartaB">
-            <img src="{{ url_for('static', filename='img/foto.jpg') }}" alt="2 de Corazones" class="cartaB">
-            
+            {%for imagen in dealer%}
+            <img src="{{ url_for('static', filename='img/' + imagen) }}" alt="{{ imagen }}" class="cartaB">
+        {% endfor %}
         </div>
    </div>
   
@@ -126,11 +228,6 @@
 
     
 
-    {% if estadoJuego.finalizado %}
-    <div class="mensaje-final">
-        <h3>{{ estadoJuego.mensajeFinal }}</h3>
-        <button onclick="window.location.href='/nuevaRonda'">Jugar de Nuevo</button>
-    </div>
-    {% endif %}
+    
 </body>
 </html>

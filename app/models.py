@@ -7,7 +7,9 @@ class Carta:
     def __init__(self, valor, palo):
         self.valor = valor
         self.palo = palo
-
+        self.nombreArchivo = valor + "-"+palo +".png"
+        
+        #Llamarlo valor-palo
     def __str__(self):
         return f"{self.valor} de {self.palo}" # Ejm: 4 de picas uwu
     
@@ -22,7 +24,7 @@ class Carta:
 class Baraja:
     palos = ["Corazones", "Diamantes", "Tréboles", "Picas"]
     valores = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
- 
+    
     def __init__(self):
         self.cartas = []
         for _ in range (7):
