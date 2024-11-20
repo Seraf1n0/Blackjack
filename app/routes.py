@@ -27,6 +27,10 @@ estadoJuego = {
     "jugadaDealer": ""
 }
 
+@app.route("/")
+def index():
+    return render_template("inicio.html")
+
 def repartirInicio():
     global probabilidadDeGanar, imagenesDealer
     for _ in range(2):
