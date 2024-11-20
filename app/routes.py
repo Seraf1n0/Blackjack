@@ -121,7 +121,7 @@ def nuevaRonda():
     dealer.mano = []
     ia1.mano = []
     ia2.mano = []
-
+    print("Reiniciando todo")
     # Repartir las cartas iniciales
     for _ in range(2):
         jugador.giveCarta(baraja.repartirCarta())

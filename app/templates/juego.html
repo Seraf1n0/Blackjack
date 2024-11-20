@@ -182,8 +182,14 @@ p {
         <div class="botones">
             <button onclick="window.location.href='/hit'">Pedir Carta</button>
             <button onclick="window.location.href='/stand'">Plantarse</button>
+            {% if estadoJuego.finalizado %}
+            <div class="mensaje-final">
+                <h3>{{ estadoJuego.mensajeFinal }}</h3>
+                <button onclick="window.location.href='/nuevaRonda'">Pedir Carta</button>
+            </div>
+            {% endif %}
         </div>
-
+        
         <div class="infoIA1">
             <h2>Cold-lettuce</h2>
             <p>Puntaje: {{ ia1Puntaje }}</p>
@@ -222,11 +228,6 @@ p {
 
     
 
-    {% if estadoJuego.finalizado %}
-    <div class="mensaje-final">
-        <h3>{{ estadoJuego.mensajeFinal }}</h3>
-        <button onclick="window.location.href='/nuevaRonda'">Jugar de Nuevo</button>
-    </div>
-    {% endif %}
+    
 </body>
 </html>
