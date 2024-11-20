@@ -157,7 +157,7 @@ def nuevaRonda():
         "finalizado": False,
         "mensajeFinal": ""
     })
-
+ 
     probabilidadDeGanar = str(jugador.probabilidadDeNoSuperar21(baraja))
     return redirect(url_for('juego'))
 
