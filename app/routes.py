@@ -1,12 +1,15 @@
 from flask import render_template, redirect, url_for, request
 from . import app
 from .models import Carta, Baraja, Jugador
+from .qlearning import AgenteQLearning
+
 baraja = Baraja()
 jugador = Jugador("Toñito")
 dealer = Jugador("Dealer Serafino")
-ia1 = Jugador("Cold Lettuce")
-ia2 = Jugador("Pop-eye")
+ia1 = AgenteQLearning("Serafino")
+ia2 = AgenteQLearning("Pancho")
 probabilidadDeGanar = 0
+
 # Estado del juego: Esto es muy importante pues nos ayuda a validar los turnos y jugadas
 estadoJuego = {
     "jugadorTurno": True,
@@ -44,7 +47,7 @@ def juego():
                            ia1Puntaje=ia1.calcularPuntuacion(),
                            ia2Puntaje=ia2.calcularPuntuacion(),
                            estadoJuego=estadoJuego,
-                           jugadorProbabilidad = probabilidadDeGanar
+                           jugadorProbabilidad=probabilidadDeGanar
 )
 
 @app.route("/hit")
@@ -76,19 +79,25 @@ def stand():
 @app.route("/procesarTurnos")
 def procesarTurnos():
     global probabilidadDeGanar
-    # Turno de IA 1
+    # Turno de IA 1 Serafino
     if estadoJuego["ia1Turno"] and not estadoJuego["finalizado"]:
-        if ia1.calcularPuntuacion() < 17:
-            ia1.giveCarta(baraja.repartirCarta())
-        if ia1.calcularPuntuacion() > 21 or ia1.calcularPuntuacion() >= 17:
+        # Se entrena a la IA con la mano actual antes de hacer la jugada
+        ia1.entrenar(baraja, numeroEpisodios=25)
+        accion = ia1.elegirAccion(ia1.obtenerEstado(ia1.calcularPuntuacion(), dealer.mano[0].valor), baraja)
+        if accion == "pedir":
+            ia1.giveCarta (baraja.repartirCarta())
+        else:
             estadoJuego["ia1Turno"] = False
             estadoJuego["ia2Turno"] = True
-
-    # Turno de IA 2
+    
+    # Turno de IA 2 Pancho
     if estadoJuego["ia2Turno"] and not estadoJuego["finalizado"]:
-        if ia2.calcularPuntuacion() < 17:
+        # Entrenamos a la IA con la mano actual anres de hacer la jugada
+        ia2.entrenar(baraja, numeroEpisodios=25)
+        accion = ia2.elegirAccion(ia2.obtenerEstado(ia2.calcularPuntuacion(), dealer.mano[0].valor), baraja)
+        if accion == "pedir":
             ia2.giveCarta(baraja.repartirCarta())
-        if ia2.calcularPuntuacion() > 21 or ia2.calcularPuntuacion() >= 17:
+        else:
             estadoJuego["ia2Turno"] = False
             estadoJuego["dealerTurno"] = True
 
