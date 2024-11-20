@@ -154,7 +154,7 @@ def procesarTurnos():
 
 @app.route("/nuevaRonda")
 def nuevaRonda():
-    global probabilidadDeGanar, baraja
+    global probabilidadDeGanar, baraja, imagenesDealer
     # Unicamente se cambia el estado del juego para que las manos sean reiniciadas y el estado del juego tambien
     # Limpiar las manos de todos los jugadores para repartir nuevamente
     baraja = Baraja() #Para reiniciar la baraja
@@ -180,7 +180,10 @@ def nuevaRonda():
         "finalizado": False,
         "mensajeFinal": ""
     })
- 
+    imagenesDealer = []
+    imagenesDealer.append(dealer.mano[0].nombreArchivo)
+    imagenesDealer.append("Volteada.png")
+    print(imagenesDealer)
     probabilidadDeGanar = str(jugador.probabilidadDeNoSuperar21(baraja))
     return redirect(url_for('juego'))
 
