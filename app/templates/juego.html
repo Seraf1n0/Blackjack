@@ -6,7 +6,6 @@
     <title>Blackjack</title>
     <style>
     
-
     body {
         display: flex;
         justify-content: center;
@@ -14,35 +13,34 @@
         min-height: 40vh;
         margin-top: 40px;
     }
-    
+
     .mesa {
-    width: 1100px; /* Ancho del div */
-    height: 700px; /* Alto del div */
-    background-image: url('{{ url_for('static', filename='img/fondo2.png') }}'); /* Imagen de fondo */
-    background-size: cover; /* Ajusta la imagen para cubrir el tamaño del div */
-    background-position: center; /* Centra la imagen */
-    background-repeat: no-repeat; /* Evita que la imagen se repita */
-    border-radius: 15px; /* Bordes redondeados (opcional) */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra para darle efecto */
+    width: 1100px; 
+    height: 700px; 
+    background-image: url('{{ url_for('static', filename='img/fondo2.png') }}'); 
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat; 
+    border-radius: 15px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); 
     display: flex;
-    justify-content: center; /* Centra el contenido dentro del div */
-    align-items: center; /* Centra el contenido verticalmente */
-    color: white; /* Texto blanco */
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Sombra en el texto */
+    justify-content: center; 
+    align-items: center; 
+    color: white; 
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); 
     position: relative;
 }
 
 .jugador {
     position: absolute;
-    
-    top: 350px;  /* Distancia desde el borde superior del contenedor */
-    left: 220px;  /* Distancia desde el borde izquierdo del contenedor */
+    top: 350px;  
+    left: 220px;  
     
     width: 300px;
     height: 50px;
 }
 .carta {
-    width: 80px; /* Ajusta el tamaño de las cartas */
+    width: 80px; 
     border-radius: 8px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
     transition: transform 0.3s ease;
@@ -50,12 +48,12 @@
 }
 
 .carta:hover {
-    transform: scale(1.1) rotate(3deg);/* Efecto al pasar el cursor */
+    transform: scale(1.1) rotate(3deg);
 }
 
 
 .cartaB {
-    width: 80px; /* Ajusta el tamaño de las cartas */
+    width: 80px; 
     border-radius: 8px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
     transition: transform 0.3s ease;
@@ -63,20 +61,20 @@
 }
 
 .cartaB:hover {
-    transform: scale(1.1) rotate(3deg);/* Efecto al pasar el cursor */
+    transform: scale(1.1) rotate(3deg);
 }
 .ia1 {
     position: absolute;
-    top: 450px;  /* Distancia desde el borde superior del contenedor */
-    left: 560px;  /* Distancia desde el borde izquierdo del contenedor */
+    top: 450px;  
+    left: 560px;  
     width: 300px;
     height: 50px;
 }
 
 .infoIA1{
     position: absolute;
-    top: 350px;  /* Distancia desde el borde superior del contenedor */
-    left: 390px;  /* Distancia desde el borde izquierdo del contenedor */
+    top: 350px; 
+    left: 390px;  
     width: 300px;
     height: 50px;
     text-align: center;
@@ -84,16 +82,16 @@
 
 .ia2 {
     position: absolute;
-    top: 350px;  /* Distancia desde el borde superior del contenedor */
-    left: 900px;  /* Distancia desde el borde izquierdo del contenedor */
+    top: 350px;  
+    left: 900px;  
     width: 300px;
     height: 50px;
 }
 
 .infoIA2{
     position: absolute;
-    top: 250px;  /* Distancia desde el borde superior del contenedor */
-    left: 730px;  /* Distancia desde el borde izquierdo del contenedor */
+    top: 250px;  
+    left: 730px;  
     width: 300px;
     height: 50px;
     text-align: center;
@@ -101,16 +99,16 @@
 
 .banca {
     position: absolute;
-    top: 200px;  /* Distancia desde el borde superior del contenedor */
-    left: 470px;  /* Distancia desde el borde izquierdo del contenedor */
+    top: 200px;  
+    left: 470px;  
     width: 300px;
     height: 50px;
 }
 
 .infoBanca{
     position: absolute;
-    top: 90px;  /* Distancia desde el borde superior del contenedor */
-    left: 400px;  /* Distancia desde el borde izquierdo del contenedor */
+    top: 90px;  
+    left: 400px;  
     width: 300px;
     height: 50px;
     text-align: center;
@@ -118,8 +116,8 @@
 
 .jugador-info {
     position: absolute;
-    top: 210px;  /* Distancia desde el borde superior del contenedor */
-    left: 20px;  /* Distancia desde el borde izquierdo del contenedor */
+    top: 210px;  
+    left: 20px;  
     border-radius: 10px;
     width: 380px;
     margin: 10px auto;
@@ -138,31 +136,61 @@ p {
 
 .botones {
     position: absolute;
-    top: 490px;  /* Distancia desde el borde superior del contenedor */
-    left: 70px;  /* Distancia desde el borde izquierdo del contenedor */
+    top: 490px;  
+    left: 70px;  
     width: 250px;
     height: 50px;
-    border: 2px solid #333;  /* Color y grosor del borde alrededor del contenedor */
-    border-radius: 10px;  /* Redondea las esquinas del contenedor */
-    background-color: #2c2523;  /* Fondo gris claro del contenedor */
-    display: flex;  /* Usamos flexbox para alinear los botones */
-    justify-content: space-between;  /* Espaciado entre los botones */
-    padding: 10px 10px;  /* Añadimos algo de espacio alrededor de los botones */
+    border: 2px solid #333;  
+    border-radius: 10px;  
+    background-color: #2c2523;  
+    display: flex;  
+    justify-content: space-between;  
+    padding: 10px 10px;  
 }
 
 .botones button {
-    background-color: #4CAF50;  /* Fondo verde para los botones */
-    color: white;  /* Color del texto */
-    border: 2px solid #4CAF50;  /* Borde del botón */
-    border-radius: 8px;  /* Redondea las esquinas de los botones */
-    padding: 10px 20px;  /* Añade algo de padding dentro de los botones */
-    font-size: 16px;  /* Tamaño de fuente para los botones */
-    cursor: pointer;  /* Cambia el cursor al pasar por encima */
-    transition: background-color 0.3s;  /* Transición suave para el hover */
+    background-color: #4CAF50;  
+    color: white;  
+    border: 2px solid #4CAF50;  
+    border-radius: 8px;  
+    padding: 10px 20px;  
+    font-size: 16px;  
+    cursor: pointer; 
+    transition: background-color 0.3s;  
 }
 
 .botones button:hover {
-    background-color: #45a049;  /* Cambio de color al pasar el cursor sobre el botón */
+    background-color: #45a049;  
+}
+
+
+.mensaje-final {
+    position: absolute;
+    top: 590px;  
+    left: 70px;  
+        
+        padding: 10px;
+        background-color: #2c2523; /* Color de fondo para el mensaje */
+        border: 1px solid #2c2523; /* Borde suave */
+        border-radius: 5px; /* Bordes redondeados */
+        text-align: center;
+    }
+
+    .mensaje-final h3 {
+        margin: 0; /* Elimina margen de h3 */
+    }
+    .mensaje-final button{
+    background-color: #4CAF50;  
+    color: white;  
+    border: 2px solid #4CAF50;  
+    border-radius: 8px;  
+    padding: 10px 20px;  
+    font-size: 16px;  
+    cursor: pointer; 
+    transition: background-color 0.3s; 
+    }
+    .mensaje-final button:hover {
+    background-color: #45a049;  
 }
 </style>
 </head>
@@ -187,14 +215,17 @@ p {
         <div class="botones">
             <button onclick="window.location.href='/hit'">Pedir Carta</button>
             <button onclick="window.location.href='/stand'">Plantarse</button>
-            {% if estadoJuego.finalizado %}
-            <div class="mensaje-final">
-                <h3>{{ estadoJuego.mensajeFinal }}</h3>
-                <button onclick="window.location.href='/nuevaRonda'">Pedir Carta</button>
-            </div>
-            {% endif %}
+
+ 
+          
+   
         </div>
-        
+        {% if estadoJuego.finalizado %}
+        <div class="mensaje-final">
+            <h3>{{ estadoJuego.mensajeFinal }}</h3>
+            <button onclick="window.location.href='/nuevaRonda'">Volver a Jugar</button>
+        </div>
+        {% endif %}
         <div class="infoIA1">
             <h2>Cold-lettuce</h2>
             <p>Puntaje: {{ ia1Puntaje }}</p>
@@ -234,41 +265,6 @@ p {
     <ul id="listaAcciones"></ul>
 </div>
 
-<script>
-    // Función para mostrar las acciones en el modal
-    function mostrarModalAcciones() {
-        // Obtener las acciones directamente desde el objeto estadoJuego
-        const acciones = {
-            "ia1": "{{ estadoJuego['jugadaIA1'] }}",
-            "ia2": "{{ estadoJuego['jugadaIA2'] }}",
-            "dealer": "{{ estadoJuego['jugadaDealer'] }}"
-        };
-        
-        // Actualizar el contenido del modal
-        const listaAcciones = document.getElementById("listaAcciones");
-        listaAcciones.innerHTML = ""; // Limpiar contenido previo
 
-        // Agregar las acciones al modal
-        for (const [key, accion] of Object.entries(acciones)) {
-            const li = document.createElement("li");
-            li.textContent = `${key.toUpperCase()}: ${accion}`;
-            listaAcciones.appendChild(li);
-        }
-
-        // Mostrar el modal
-        const modal = document.getElementById("modalAcciones");
-        modal.style.display = "block";
-
-        // Ocultar el modal después de unos segundos
-        setTimeout(() => {
-            modal.style.display = "none";
-        }, 8000); // 5 segundos
-    }
-
-    // Mostrar el modal automáticamente después de cargar la página
-    window.onload = function() {
-        mostrarModalAcciones();
-    };
-</script>
 </body>
 </html>
