@@ -114,14 +114,16 @@ def procesarTurnos():
 
 @app.route("/nuevaRonda")
 def nuevaRonda():
-    global probabilidadDeGanar
+    global probabilidadDeGanar, baraja
     # Unicamente se cambia el estado del juego para que las manos sean reiniciadas y el estado del juego tambien
     # Limpiar las manos de todos los jugadores para repartir nuevamente
+    baraja = Baraja() #Para reiniciar la baraja
     jugador.mano = []
     dealer.mano = []
     ia1.mano = []
     ia2.mano = []
     print("Reiniciando todo")
+    print(f"Cantidad de cartas en la baraja: {len(baraja.cartas)}")
     # Repartir las cartas iniciales
     for _ in range(2):
         jugador.giveCarta(baraja.repartirCarta())
