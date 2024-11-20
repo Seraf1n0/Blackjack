@@ -2,6 +2,7 @@ from flask import render_template, redirect, url_for, request
 from . import app
 from .models import Carta, Baraja, Jugador
 from .qlearning import AgenteQLearning
+from copy import deepcopy
 
 baraja = Baraja()
 jugador = Jugador("Toñito")
@@ -104,7 +105,9 @@ def procesarTurnos():
                 estadoJuego["jugadaIA1"] = "Se pasó de 21"
                 break
 
+            copiaMano = deepcopy(ia1.mano)
             ia1.entrenar(baraja, numeroEpisodios=5)
+            ia1.mano = copiaMano
             accion = ia1.elegirAccion(ia1.obtenerEstado(ia1.calcularPuntuacion(), dealer.mano[0].valor), baraja)
 
             if accion == "plantarse":
@@ -125,7 +128,9 @@ def procesarTurnos():
                 estadoJuego["jugadaIA2"] = "Se pasó de 21"
                 break
 
+            copiaMano2 = deepcopy(ia2.mano)
             ia2.entrenar(baraja, numeroEpisodios=5)
+            ia2.mano = copiaMano2
             accion = ia2.elegirAccion(ia2.obtenerEstado(ia2.calcularPuntuacion(), dealer.mano[0].valor), baraja)
 
             if accion == "plantarse":

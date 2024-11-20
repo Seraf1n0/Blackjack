@@ -94,4 +94,5 @@ class AgenteQLearning(Jugador):
                 estado = siguienteEstado
 
             self.tasaExploracion *= self.decrecimientoExploracion
+            self.mano = []
         
