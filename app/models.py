@@ -27,9 +27,10 @@ class Baraja:
     
     def __init__(self):
         self.cartas = []
-        for palo in self.palos:
-            for valor in self.valores:
-                self.cartas.append(Carta(valor, palo))
+        for _ in range (7):
+            for palo in self.palos:
+                for valor in self.valores:
+                    self.cartas.append(Carta(valor, palo))
         
         random.shuffle (self.cartas) # Mezclado de cartas
     
@@ -91,17 +92,3 @@ class Jugador:
 
         probabilidadFracaso = (noTomarCarta / ciclos) * 100
         return int(probabilidadFracaso)
-
-def prueba():
-    jugador = Jugador("Leche agria")
-    baraja = Baraja()
-
-    #Le doy al menos dos cartas
-    for i in range(2):
-        jugador.giveCarta(baraja.repartirCarta())
-    
-    #Para ver la puntuación actual
-    print(f"Puntuación actual: {jugador.calcularPuntuacion()}")
-    #Montecarlos
-    jugador.probabilidadDeNoSuperar21(baraja)
-prueba()
