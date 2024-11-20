@@ -1,12 +1,15 @@
 # En este archivo van a estar todos los modelos necesarios para la app
 import random
+import copy
 """
 """
 class Carta:
     def __init__(self, valor, palo):
         self.valor = valor
         self.palo = palo
-
+        self.nombreArchivo = valor + "-"+palo +".png"
+        
+        #Llamarlo valor-palo
     def __str__(self):
         return f"{self.valor} de {self.palo}" # Ejm: 4 de picas uwu
     
@@ -21,12 +24,13 @@ class Carta:
 class Baraja:
     palos = ["Corazones", "Diamantes", "Tréboles", "Picas"]
     valores = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
- 
+    
     def __init__(self):
         self.cartas = []
-        for palo in self.palos:
-            for valor in self.valores:
-                self.cartas.append(Carta(valor, palo))
+        for _ in range (7):
+            for palo in self.palos:
+                for valor in self.valores:
+                    self.cartas.append(Carta(valor, palo))
         
         random.shuffle (self.cartas) # Mezclado de cartas
     
@@ -63,4 +67,28 @@ class Jugador:
     
     def __str__(self):
         return f"{self.nombre} tiene: {[str(carta) for carta in self.mano]}"
+    
+    def probabilidadDeNoSuperar21(self, baraja):
+        ciclos = 1000
+        copiaBaraja = copy.deepcopy(baraja) #Copio la baraja para no afectar las simulaciones siguientes
+        copiaJugador = copy.deepcopy(self) 
+        #Simulo tomar una carta para ver que sucede
+        tomarCarta = 0
+        noTomarCarta = 0
+        for i in range(ciclos):
+            random.shuffle(copiaBaraja.cartas) #La mezclo para que no sea siempre el mismo orden
+            carta = copiaBaraja.repartirCarta() #Tomo una carta de la baraja
+            copiaJugador.giveCarta(carta) #Le pongo la carta al jugador
+
+            #Ahora calculo su puntuación para ver si se pasa de 21
+            if(copiaJugador.calcularPuntuacion() > 21):
+                noTomarCarta += 1 #Falló, entonces sumo 1 a no tomar carta
+            else:
+                tomarCarta +=1
+            #Reseteo la baraja y el jugador para simular otra vez
+            copiaBaraja = copy.deepcopy(baraja)
+            copiaJugador = copy.deepcopy(self) 
         
+
+        probabilidadFracaso = (noTomarCarta / ciclos) * 100
+        return int(probabilidadFracaso)

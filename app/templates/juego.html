@@ -5,125 +5,266 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blackjack</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #006400; /* Verde oscuro como una mesa de blackjack */
-            color: white;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 40vh;
+        margin-top: 40px;
+    }
 
-        h1 {
-            margin: 20px 0;
-            text-shadow: 2px 2px 4px #000000;
-        }
+    .mesa {
+    width: 1100px; 
+    height: 700px; 
+    background-image: url('{{ url_for('static', filename='img/fondo2.png') }}'); 
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat; 
+    border-radius: 15px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); 
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    color: white; 
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); 
+    position: relative;
+}
 
-        .mesa {
-            display: grid;
-            grid-template-areas: 
-                "dealer dealer dealer"
-                ". ia1 ia2"
-                ". jugador .";
-            gap: 20px;
-            width: 80%;
-            margin-top: 20px;
-        }
+.jugador {
+    position: absolute;
+    top: 350px;  
+    left: 220px;  
+    
+    width: 300px;
+    height: 50px;
+}
+.carta {
+    width: 80px; 
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease;
+    margin-left: -65px;
+}
 
-        .dealer-cards {
-            grid-area: dealer;
-            text-align: center;
-        }
+.carta:hover {
+    transform: scale(1.1) rotate(3deg);
+}
 
-        .jugador-cards {
-            grid-area: jugador;
-            text-align: center;
-        }
 
-        .ia1-cards {
-            grid-area: ia1;
-            text-align: center;
-        }
+.cartaB {
+    width: 80px; 
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease;
 
-        .ia2-cards {
-            grid-area: ia2;
-            text-align: center;
-        }
+}
 
-        .card-container {
-            background-color: #228B22; /* Verde más claro para resaltar */
-            border: 2px solid #ffffff;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-        }
+.cartaB:hover {
+    transform: scale(1.1) rotate(3deg);
+}
+.ia1 {
+    position: absolute;
+    top: 450px;  
+    left: 560px;  
+    width: 300px;
+    height: 50px;
+}
 
-        button {
-            background-color: #ffffff;
-            color: #000000;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
+.infoIA1{
+    position: absolute;
+    top: 350px; 
+    left: 390px;  
+    width: 300px;
+    height: 50px;
+    text-align: center;
+}
 
-        button:hover {
-            background-color: #ffcc00;
-            color: #000000;
-        }
+.ia2 {
+    position: absolute;
+    top: 350px;  
+    left: 900px;  
+    width: 300px;
+    height: 50px;
+}
 
-        .mensaje-final {
-            margin-top: 30px;
-            text-align: center;
-        }
+.infoIA2{
+    position: absolute;
+    top: 250px;  
+    left: 730px;  
+    width: 300px;
+    height: 50px;
+    text-align: center;
+}
 
-        .mensaje-final button {
-            margin-top: 10px;
-        }
-    </style>
+.banca {
+    position: absolute;
+    top: 200px;  
+    left: 470px;  
+    width: 300px;
+    height: 50px;
+}
+
+.infoBanca{
+    position: absolute;
+    top: 90px;  
+    left: 400px;  
+    width: 300px;
+    height: 50px;
+    text-align: center;
+}
+
+.jugador-info {
+    position: absolute;
+    top: 210px;  
+    left: 20px;  
+    border-radius: 10px;
+    width: 380px;
+    margin: 10px auto;
+    text-align: center;
+}
+
+h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 1.1em;
+    margin: 5px 0;
+}
+
+.botones {
+    position: absolute;
+    top: 490px;  
+    left: 70px;  
+    width: 250px;
+    height: 50px;
+    border: 2px solid #333;  
+    border-radius: 10px;  
+    background-color: #2c2523;  
+    display: flex;  
+    justify-content: space-between;  
+    padding: 10px 10px;  
+}
+
+.botones button {
+    background-color: #4CAF50;  
+    color: white;  
+    border: 2px solid #4CAF50;  
+    border-radius: 8px;  
+    padding: 10px 20px;  
+    font-size: 16px;  
+    cursor: pointer; 
+    transition: background-color 0.3s;  
+}
+
+.botones button:hover {
+    background-color: #45a049;  
+}
+
+
+.mensaje-final {
+    position: absolute;
+    top: 590px;  
+    left: 70px;  
+        
+        padding: 10px;
+        background-color: #2c2523; 
+        border: 1px solid #2c2523; 
+        border-radius: 5px; 
+        text-align: center;
+    }
+
+    .mensaje-final h3 {
+        margin: 0; 
+    }
+    .mensaje-final button{
+    background-color: #4CAF50;  
+    color: white;  
+    border: 2px solid #4CAF50;  
+    border-radius: 8px;  
+    padding: 10px 20px;  
+    font-size: 16px;  
+    cursor: pointer; 
+    transition: background-color 0.3s; 
+    }
+    .mensaje-final button:hover {
+    background-color: #45a049;  
+}
+</style>
 </head>
 <body>
-    <h1>Blackjack</h1>
-    <div class="mesa">
-        <!-- Dealer -->
-        <div class="dealer-cards card-container">
-            <h2>Dealer: Serafino</h2>
-            <p>Cartas: {{ dealerCartas }}</p>
-            <p>Puntaje: {{ dealerPuntaje }}</p>
-        </div>
 
-        <!-- IA 1 -->
-        <div class="ia1-cards card-container">
-            <h2>Cold-lettuce</h2>
-            <p>Cartas: {{ ia1Cartas }}</p>
-            <p>Puntaje: {{ ia1Puntaje }}</p>
-        </div>
+   <div class="mesa">
 
-        <!-- IA 2 -->
-        <div class="ia2-cards card-container">
-            <h2>Pop-eye</h2>
-            <p>Cartas: {{ ia2Cartas }}</p>
-            <p>Puntaje: {{ ia2Puntaje }}</p>
-        </div>
+    <div class="jugador-info">
+        <h2>Jugador: {{ jugadorNombre }}</h2>
+        <p>Puntaje: {{ jugadorPuntaje }}</p>
+        <p>Probabilidad de pasarse de 21 si pide otra carta: {{ jugadorProbabilidad }}%</p>
+    </div>
+        <div class="jugador">
+            <!--
+            Esta es la manera de iterar las cartas para mostrarlas
+            -->
+            {%for imagen in jugadorInterfaz.mano%}
+                <img src="{{ url_for('static', filename='img/' + imagen.nombreArchivo) }}" alt="{{ imagen }}" class="carta">
+            {% endfor %}
 
-        <!-- Jugador -->
-        <div class="jugador-cards card-container">
-            <h2>Jugador: Toñito</h2>
-            <p>Cartas: {{ jugadorCartas }}</p>
-            <p>Puntaje: {{ jugadorPuntaje }}</p>
+        </div>
+        <div class="botones">
             <button onclick="window.location.href='/hit'">Pedir Carta</button>
             <button onclick="window.location.href='/stand'">Plantarse</button>
-        </div>
-    </div>
 
-    {% if estadoJuego.finalizado %}
-    <div class="mensaje-final">
-        <h3>{{ estadoJuego.mensajeFinal }}</h3>
-        <button onclick="window.location.href='/nuevaRonda'">Jugar de Nuevo</button>
-    </div>
-    {% endif %}
+ 
+          
+   
+        </div>
+        {% if estadoJuego.finalizado %}
+        <div class="mensaje-final">
+            <h3>{{ estadoJuego.mensajeFinal }}</h3>
+            <button onclick="window.location.href='/nuevaRonda'">Volver a Jugar</button>
+        </div>
+        {% endif %}
+        <div class="infoIA1">
+            <h2>Cold-lettuce</h2>
+            <p>Puntaje: {{ ia1Puntaje }}</p>
+        </div>
+        <div class="ia1">
+   
+            {%for imagen in ia1.mano%}
+                <img src="{{ url_for('static', filename='img/' + imagen.nombreArchivo) }}" alt="{{ imagen }}" class="carta">
+            {% endfor %}
+            
+        </div>
+
+        <div class="infoIA2">
+            <h2>Pop-eye</h2>
+            <p>Puntaje: {{ ia2Puntaje }}</p>
+            </div>
+        <div class="ia2">
+            {%for imagen in ia2.mano%}
+                <img src="{{ url_for('static', filename='img/' + imagen.nombreArchivo) }}" alt="{{ imagen }}" class="carta">
+            {% endfor %}
+            
+        </div>
+
+        <div class="infoBanca">
+            <h2>Dealer: Serafino</h2>
+            <p>Puntaje: {{ dealerPuntaje }}</p>
+        </div>
+        <div class="banca">
+            {%for imagen in dealer%}
+            <img src="{{ url_for('static', filename='img/' + imagen) }}" alt="{{ imagen }}" class="cartaB">
+        {% endfor %}
+        </div>
+   </div>
+
+   <div id="modalAcciones" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; padding:20px; border:1px solid black; box-shadow:0 0 10px rgba(0,0,0,0.5); z-index:1000;">
+    <h2>Acciones realizadas</h2>
+    <ul id="listaAcciones"></ul>
+</div>
+
+
 </body>
 </html>
