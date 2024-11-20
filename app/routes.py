@@ -17,7 +17,14 @@ estadoJuego = {
     "ia2Turno": False,
     "dealerTurno": False,
     "finalizado": False,
-    "mensajeFinal": ""
+    "mensajeFinal": "",
+    "juegaJugador": True, #Para saber si aún tienen chance de jugar y revisar el texto
+    "juegaIA1": False, #En primera instancia false para que no los revise
+    "juegaIA2": False,
+    "juegaDealer": False,
+    "jugadaIA1": "", #Estos textos son para ingresar si se plantó o no
+    "jugadaIA2": "",
+    "jugadaDealer": ""
 }
 
 def repartirInicio():
@@ -36,7 +43,7 @@ def repartirInicio():
     print(imagenesDealer)
 @app.route("/juego")
 def juego():
-    # Si el juego no ha comenzado, repartir las cartas iniciales
+    # Si el juego no ha comenzado, repartir las cartas iniciales. Primero va a jugar la persona y luego las ias
     if len(jugador.mano) == 0:
         repartirInicio()
 
@@ -55,7 +62,6 @@ def juego():
                            ia1 = ia1,
                            ia2 = ia2,
                            dealer = imagenesDealer
-
 )
 
 @app.route("/hit")
@@ -75,6 +81,7 @@ def hit():
 @app.route("/stand")
 def stand():
     global probabilidadDeGanar
+    estadoJuego["jugadorTurno"] = True
     # Si es el turno del Jugador pasamos al tirno de la IA 1 
     if estadoJuego["jugadorTurno"] and not estadoJuego["finalizado"]:
         estadoJuego["jugadorTurno"] = False
@@ -90,33 +97,35 @@ def procesarTurnos():
     # Turno de IA 1 Serafino
     if estadoJuego["ia1Turno"] and not estadoJuego["finalizado"]:
         # Se entrena a la IA con la mano actual antes de hacer la jugada
-        ia1.entrenar(baraja, numeroEpisodios=25)
+        ia1.entrenar(baraja, numeroEpisodios=5)
         accion = ia1.elegirAccion(ia1.obtenerEstado(ia1.calcularPuntuacion(), dealer.mano[0].valor), baraja)
+        estadoJuego["jugadaIA1"] = accion
+        estadoJuego["juegaIA1"] = True
         if accion == "pedir":
             ia1.giveCarta (baraja.repartirCarta())
-        else:
-            estadoJuego["ia1Turno"] = False
-            estadoJuego["ia2Turno"] = True
-    
+
+
     # Turno de IA 2 Pancho
     if estadoJuego["ia2Turno"] and not estadoJuego["finalizado"]:
         # Entrenamos a la IA con la mano actual anres de hacer la jugada
-        ia2.entrenar(baraja, numeroEpisodios=25)
+        ia2.entrenar(baraja, numeroEpisodios=5)
         accion = ia2.elegirAccion(ia2.obtenerEstado(ia2.calcularPuntuacion(), dealer.mano[0].valor), baraja)
+        estadoJuego["jugadaIA2"] = accion
+        estadoJuego["juegaIA2"] = True
         if accion == "pedir":
             ia2.giveCarta(baraja.repartirCarta())
-        else:
-            estadoJuego["ia2Turno"] = False
-            estadoJuego["dealerTurno"] = True
+
 
     # Turno de Serafino
     if estadoJuego["dealerTurno"] and not estadoJuego["finalizado"]:
+        estadoJuego["jugadaDealer"] = "no pide carta"
+        estadoJuego["juegaDealer"] = True
         while dealer.calcularPuntuacion() < 17:
             dealer.giveCarta(baraja.repartirCarta())
-        estadoJuego["dealerTurno"] = False
-        estadoJuego["finalizado"] = True
-        evaluarResultado()
+            estadoJuego["jugadaDealer"] = "pide carta"
 
+        
+    evaluarResultado()
     probabilidadDeGanar = str(jugador.probabilidadDeNoSuperar21(baraja))
     return redirect(url_for('juego'))
 
@@ -170,7 +179,7 @@ def evaluarResultado():
         estadoJuego["mensajeFinal"] = "¡Empate!"
 
     # Actualizamos los turnos
-    estadoJuego["jugadorTurno"] = False
-    estadoJuego["ia1Turno"] = False
-    estadoJuego["ia2Turno"] = False
-    estadoJuego["dealerTurno"] = False
+    #estadoJuego["jugadorTurno"] = False
+    #estadoJuego["ia1Turno"] = False
+    #estadoJuego["ia2Turno"] = False
+    #estadoJuego["dealerTurno"] = False

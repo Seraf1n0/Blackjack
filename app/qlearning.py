@@ -68,7 +68,7 @@ class AgenteQLearning(Jugador):
         else:
             return 0
 
-    def entrenar(self, baraja, numeroEpisodios=1000):
+    def entrenar(self, baraja, numeroEpisodios=500):
         for _ in range(numeroEpisodios):
             copiaBaraja = deepcopy(baraja)
             self.mano = []

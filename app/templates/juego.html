@@ -228,5 +228,47 @@ p {
         {% endfor %}
         </div>
    </div>
+
+   <div id="modalAcciones" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; padding:20px; border:1px solid black; box-shadow:0 0 10px rgba(0,0,0,0.5); z-index:1000;">
+    <h2>Acciones realizadas</h2>
+    <ul id="listaAcciones"></ul>
+</div>
+
+<script>
+    // Función para mostrar las acciones en el modal
+    function mostrarModalAcciones() {
+        // Obtener las acciones directamente desde el objeto estadoJuego
+        const acciones = {
+            "ia1": "{{ estadoJuego['jugadaIA1'] }}",
+            "ia2": "{{ estadoJuego['jugadaIA2'] }}",
+            "dealer": "{{ estadoJuego['jugadaDealer'] }}"
+        };
+        
+        // Actualizar el contenido del modal
+        const listaAcciones = document.getElementById("listaAcciones");
+        listaAcciones.innerHTML = ""; // Limpiar contenido previo
+
+        // Agregar las acciones al modal
+        for (const [key, accion] of Object.entries(acciones)) {
+            const li = document.createElement("li");
+            li.textContent = `${key.toUpperCase()}: ${accion}`;
+            listaAcciones.appendChild(li);
+        }
+
+        // Mostrar el modal
+        const modal = document.getElementById("modalAcciones");
+        modal.style.display = "block";
+
+        // Ocultar el modal después de unos segundos
+        setTimeout(() => {
+            modal.style.display = "none";
+        }, 8000); // 5 segundos
+    }
+
+    // Mostrar el modal automáticamente después de cargar la página
+    window.onload = function() {
+        mostrarModalAcciones();
+    };
+</script>
 </body>
 </html>
