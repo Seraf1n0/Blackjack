@@ -1,14 +1,12 @@
 from flask import render_template, redirect, url_for, request
 from . import app
 from .models import Carta, Baraja, Jugador
-
-
 baraja = Baraja()
 jugador = Jugador("Toñito")
 dealer = Jugador("Dealer Serafino")
 ia1 = Jugador("Cold Lettuce")
 ia2 = Jugador("Pop-eye")
-
+probabilidadDeGanar = 0
 # Estado del juego: Esto es muy importante pues nos ayuda a validar los turnos y jugadas
 estadoJuego = {
     "jugadorTurno": True,
@@ -20,11 +18,15 @@ estadoJuego = {
 }
 
 def repartirInicio():
+    global probabilidadDeGanar
     for _ in range(2):
         jugador.giveCarta(baraja.repartirCarta())
         dealer.giveCarta(baraja.repartirCarta())
         ia1.giveCarta(baraja.repartirCarta())
         ia2.giveCarta(baraja.repartirCarta())
+        probabilidadDeGanar = str(jugador.probabilidadDeNoSuperar21(baraja))
+    #Para calcular la probabilidad inicial de ganar
+    
 
 @app.route("/juego")
 def juego():
@@ -41,30 +43,39 @@ def juego():
                            dealerPuntaje=dealer.calcularPuntuacion(),
                            ia1Puntaje=ia1.calcularPuntuacion(),
                            ia2Puntaje=ia2.calcularPuntuacion(),
-                           estadoJuego=estadoJuego)
+                           estadoJuego=estadoJuego,
+                           jugadorProbabilidad = probabilidadDeGanar
+)
 
 @app.route("/hit")
 def hit():
+    global probabilidadDeGanar
     # Solo se permite pedir carta si es turno del jugador, sino no
     if estadoJuego["jugadorTurno"] and not estadoJuego["finalizado"]:
         jugador.giveCarta(baraja.repartirCarta())
+        probabilidadDeGanar = str(jugador.probabilidadDeNoSuperar21(baraja))
         if jugador.calcularPuntuacion() > 21:
             estadoJuego["jugadorTurno"] = False
             estadoJuego["ia1Turno"] = True
+            estadoJuego["ia2Turno"] = True
 
     return redirect(url_for('procesarTurnos'))
 
 @app.route("/stand")
 def stand():
+    global probabilidadDeGanar
     # Si es el turno del Jugador pasamos al tirno de la IA 1 
     if estadoJuego["jugadorTurno"] and not estadoJuego["finalizado"]:
         estadoJuego["jugadorTurno"] = False
         estadoJuego["ia1Turno"] = True
-
+        estadoJuego["ia2Turno"] = True
+        probabilidadDeGanar = str(jugador.probabilidadDeNoSuperar21(baraja))
+        
     return redirect(url_for('procesarTurnos'))
 
 @app.route("/procesarTurnos")
 def procesarTurnos():
+    global probabilidadDeGanar
     # Turno de IA 1
     if estadoJuego["ia1Turno"] and not estadoJuego["finalizado"]:
         if ia1.calcularPuntuacion() < 17:
@@ -74,7 +85,7 @@ def procesarTurnos():
             estadoJuego["ia2Turno"] = True
 
     # Turno de IA 2
-    elif estadoJuego["ia2Turno"] and not estadoJuego["finalizado"]:
+    if estadoJuego["ia2Turno"] and not estadoJuego["finalizado"]:
         if ia2.calcularPuntuacion() < 17:
             ia2.giveCarta(baraja.repartirCarta())
         if ia2.calcularPuntuacion() > 21 or ia2.calcularPuntuacion() >= 17:
@@ -82,17 +93,19 @@ def procesarTurnos():
             estadoJuego["dealerTurno"] = True
 
     # Turno de Serafino
-    elif estadoJuego["dealerTurno"] and not estadoJuego["finalizado"]:
+    if estadoJuego["dealerTurno"] and not estadoJuego["finalizado"]:
         while dealer.calcularPuntuacion() < 17:
             dealer.giveCarta(baraja.repartirCarta())
         estadoJuego["dealerTurno"] = False
         estadoJuego["finalizado"] = True
         evaluarResultado()
 
+    probabilidadDeGanar = str(jugador.probabilidadDeNoSuperar21(baraja))
     return redirect(url_for('juego'))
 
 @app.route("/nuevaRonda")
 def nuevaRonda():
+    global probabilidadDeGanar
     # Unicamente se cambia el estado del juego para que las manos sean reiniciadas y el estado del juego tambien
     # Limpiar las manos de todos los jugadores para repartir nuevamente
     jugador.mano = []
@@ -117,6 +130,7 @@ def nuevaRonda():
         "mensajeFinal": ""
     })
 
+    probabilidadDeGanar = str(jugador.probabilidadDeNoSuperar21(baraja))
     return redirect(url_for('juego'))
 
 

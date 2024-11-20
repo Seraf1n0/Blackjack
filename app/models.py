@@ -1,5 +1,6 @@
 # En este archivo van a estar todos los modelos necesarios para la app
 import random
+import copy
 """
 """
 class Carta:
@@ -63,4 +64,42 @@ class Jugador:
     
     def __str__(self):
         return f"{self.nombre} tiene: {[str(carta) for carta in self.mano]}"
+    
+    def probabilidadDeNoSuperar21(self, baraja):
+        ciclos = 1000
+        copiaBaraja = copy.deepcopy(baraja) #Copio la baraja para no afectar las simulaciones siguientes
+        copiaJugador = copy.deepcopy(self) 
+        #Simulo tomar una carta para ver que sucede
+        tomarCarta = 0
+        noTomarCarta = 0
+        for i in range(ciclos):
+            random.shuffle(copiaBaraja.cartas) #La mezclo para que no sea siempre el mismo orden
+            carta = copiaBaraja.repartirCarta() #Tomo una carta de la baraja
+            copiaJugador.giveCarta(carta) #Le pongo la carta al jugador
+
+            #Ahora calculo su puntuación para ver si se pasa de 21
+            if(copiaJugador.calcularPuntuacion() > 21):
+                noTomarCarta += 1 #Falló, entonces sumo 1 a no tomar carta
+            else:
+                tomarCarta +=1
+            #Reseteo la baraja y el jugador para simular otra vez
+            copiaBaraja = copy.deepcopy(baraja)
+            copiaJugador = copy.deepcopy(self) 
         
+
+        probabilidadFracaso = (noTomarCarta / ciclos) * 100
+        return int(probabilidadFracaso)
+
+def prueba():
+    jugador = Jugador("Leche agria")
+    baraja = Baraja()
+
+    #Le doy al menos dos cartas
+    for i in range(2):
+        jugador.giveCarta(baraja.repartirCarta())
+    
+    #Para ver la puntuación actual
+    print(f"Puntuación actual: {jugador.calcularPuntuacion()}")
+    #Montecarlos
+    jugador.probabilidadDeNoSuperar21(baraja)
+prueba()
