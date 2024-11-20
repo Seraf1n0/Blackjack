@@ -7,6 +7,7 @@ dealer = Jugador("Dealer Serafino")
 ia1 = Jugador("Cold Lettuce")
 ia2 = Jugador("Pop-eye")
 probabilidadDeGanar = 0
+imagenesDealer = []
 # Estado del juego: Esto es muy importante pues nos ayuda a validar los turnos y jugadas
 estadoJuego = {
     "jugadorTurno": True,
@@ -18,22 +19,25 @@ estadoJuego = {
 }
 
 def repartirInicio():
-    global probabilidadDeGanar
+    global probabilidadDeGanar, imagenesDealer
     for _ in range(2):
         jugador.giveCarta(baraja.repartirCarta())
         dealer.giveCarta(baraja.repartirCarta())
+        
         ia1.giveCarta(baraja.repartirCarta())
         ia2.giveCarta(baraja.repartirCarta())
         probabilidadDeGanar = str(jugador.probabilidadDeNoSuperar21(baraja))
     #Para calcular la probabilidad inicial de ganar
-    
 
+    imagenesDealer.append(dealer.mano[0].nombreArchivo)
+    imagenesDealer.append("Volteada.png")
+    print(imagenesDealer)
 @app.route("/juego")
 def juego():
     # Si el juego no ha comenzado, repartir las cartas iniciales
     if len(jugador.mano) == 0:
         repartirInicio()
-    
+
     return render_template("juego.html", 
                            jugadorCartas=jugador.__str__(), 
                            dealerCartas=dealer.__str__(),
@@ -44,7 +48,12 @@ def juego():
                            ia1Puntaje=ia1.calcularPuntuacion(),
                            ia2Puntaje=ia2.calcularPuntuacion(),
                            estadoJuego=estadoJuego,
-                           jugadorProbabilidad = probabilidadDeGanar
+                           jugadorProbabilidad = probabilidadDeGanar,
+                           jugadorInterfaz = jugador,
+                           ia1 = ia1,
+                           ia2 = ia2,
+                           dealer = imagenesDealer
+
 )
 
 @app.route("/hit")
